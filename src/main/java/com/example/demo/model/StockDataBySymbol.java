@@ -3,10 +3,9 @@ package com.example.demo.model;
 import org.springframework.data.cassandra.core.cql.Ordering;
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
 import org.springframework.data.cassandra.core.mapping.CassandraType;
-import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
 import org.springframework.data.cassandra.core.mapping.Table;
-import java.sql.Date;
+import java.sql.Timestamp;
 
 import com.datastax.driver.core.DataType.Name;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -35,9 +34,10 @@ public class StockDataBySymbol {
     ordering=Ordering.DESCENDING,
     ordinal=1
   )
+
   @CassandraType(type = Name.TIMESTAMP)
-  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-  private @NonNull Date timestampData;
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ssz")
+  private @NonNull Timestamp timestampData;
 
   private Double open;
   private Double high;

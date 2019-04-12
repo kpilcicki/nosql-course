@@ -1,10 +1,9 @@
 package com.example.demo.controller;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +31,7 @@ public class StockDataBySymbolController {
   @GetMapping("/stockDataBySymbolTimestamp")
   public Optional<StockDataBySymbol> getStockDataBySymbolAndTimestamp(@RequestBody StockDataBySymbol stockQuery){
     String symbol = stockQuery.getSymbol();
-    Date timestampData = stockQuery.getTimestampData();
+    Timestamp timestampData = stockQuery.getTimestampData();
     Optional<StockDataBySymbol> emp = stockDataBySymbolRepository.findBySymbolAndTimestampData(symbol, timestampData);
     return emp;
   }
@@ -40,7 +39,7 @@ public class StockDataBySymbolController {
   @PutMapping("/stockDataBySymbol")
   public Optional<StockDataBySymbol> updateStockDataBySymbol(@RequestBody StockDataBySymbol newStockDataBySymbol) {
     String symbol = newStockDataBySymbol.getSymbol();
-    Date timestampData = newStockDataBySymbol.getTimestampData();
+    Timestamp timestampData = newStockDataBySymbol.getTimestampData();
     Optional<StockDataBySymbol> optionalEmp = stockDataBySymbolRepository.findBySymbolAndTimestampData(symbol, timestampData);
     if (optionalEmp.isPresent()) {
       StockDataBySymbol emp = optionalEmp.get();
@@ -59,10 +58,15 @@ public class StockDataBySymbolController {
   @DeleteMapping(value = "/stockDataBySymbol", produces = "application/json; charset=utf-8")
   public String deleteStockDataBySymbolTimestampData(@RequestBody StockDataBySymbol newStockDataBySymbol) {
     String symbol = newStockDataBySymbol.getSymbol();
-    Date timestampData = newStockDataBySymbol.getTimestampData();
+    Timestamp timestampData = newStockDataBySymbol.getTimestampData();
     Boolean result = stockDataBySymbolRepository.existsBySymbolAndTimestampData(symbol, timestampData);
-    stockDataBySymbolRepository.deleteBySymbolAndTimestampData(symbol, timestampData);
-    return "{ \"success\" : " + (result ? "true" : "false") + " }";
+    Optional<StockDataBySymbol> optionalDeleted = stockDataBySymbolRepository.deleteBySymbolAndTimestampData(symbol, timestampData);
+
+    if (optionalDeleted.isPresent()) {
+      
+      return "{ \"noo\": \"" + optionalDeleted + "\" }";
+    }
+    return "{ \"success\" : " + (result ? "true" : "false") + optionalDeleted + " }";
   }
 
   @PostMapping("/stockDataBySymbol")
