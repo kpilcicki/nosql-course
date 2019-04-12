@@ -1,0 +1,1 @@
+curl -X GET  http://localhost:8082/stockCompanies  -H 'Cache-Control: no-cache'   -H 'Content-Type: application/json'

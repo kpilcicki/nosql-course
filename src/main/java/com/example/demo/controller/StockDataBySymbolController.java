@@ -1,14 +1,13 @@
 package com.example.demo.controller;
 
-import java.sql.Timestamp;
+import com.example.demo.model.StockDataBySymbol;
+import com.example.demo.repository.StockDataBySymbolRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import com.example.demo.model.StockDataBySymbol;
-import com.example.demo.repository.StockDataBySymbolRepository;
 
 @RestController
 public class StockDataBySymbolController {
@@ -30,24 +29,24 @@ public class StockDataBySymbolController {
 
     @GetMapping("/stockDataBySymbolKey")
     public Optional<StockDataBySymbol> getStockDataBySymbolAndTimestamp(@RequestBody StockDataBySymbol stockQuery) {
-        Optional<StockDataBySymbol> emp = stockDataBySymbolRepository.findById(stockQuery.getStockDataBySymbolKey());
-        return emp;
+        Optional<StockDataBySymbol> dataBySymbol = stockDataBySymbolRepository.findById(stockQuery.getStockDataBySymbolKey());
+        return dataBySymbol;
     }
 
     @PutMapping("/stockDataBySymbol")
     public Optional<StockDataBySymbol> updateStockDataBySymbol(@RequestBody StockDataBySymbol newStockDataBySymbol) {
-        Optional<StockDataBySymbol> optionalEmp = stockDataBySymbolRepository.findById(newStockDataBySymbol.getStockDataBySymbolKey());
-        if (optionalEmp.isPresent()) {
-            StockDataBySymbol emp = optionalEmp.get();
-            emp.setOpen(newStockDataBySymbol.getOpen());
-            emp.setHigh(newStockDataBySymbol.getHigh());
-            emp.setLow(newStockDataBySymbol.getLow());
-            emp.setClose(newStockDataBySymbol.getClose());
-            emp.setVolume(newStockDataBySymbol.getVolume());
+        Optional<StockDataBySymbol> dataBySymbol = stockDataBySymbolRepository.findById(newStockDataBySymbol.getStockDataBySymbolKey());
+        if (dataBySymbol.isPresent()) {
+            StockDataBySymbol data = dataBySymbol.get();
+            data.setOpen(newStockDataBySymbol.getOpen());
+            data.setHigh(newStockDataBySymbol.getHigh());
+            data.setLow(newStockDataBySymbol.getLow());
+            data.setClose(newStockDataBySymbol.getClose());
+            data.setVolume(newStockDataBySymbol.getVolume());
 
-            stockDataBySymbolRepository.save(emp);
+            stockDataBySymbolRepository.save(data);
         }
-        return optionalEmp;
+        return dataBySymbol;
     }
 
     @DeleteMapping(value = "/stockDataBySymbol", produces = "application/json; charset=utf-8")
@@ -60,7 +59,7 @@ public class StockDataBySymbolController {
 
     @PostMapping("/stockDataBySymbol")
     public StockDataBySymbol addStockDataBySymbol(@RequestBody StockDataBySymbol newStockDataBySymbol) {
-        StockDataBySymbol emp = new StockDataBySymbol(
+        StockDataBySymbol dataBySymbol = new StockDataBySymbol(
                 newStockDataBySymbol.getStockDataBySymbolKey(),
                 newStockDataBySymbol.getOpen(),
                 newStockDataBySymbol.getHigh(),
@@ -68,7 +67,7 @@ public class StockDataBySymbolController {
                 newStockDataBySymbol.getClose(),
                 newStockDataBySymbol.getVolume()
         );
-        stockDataBySymbolRepository.save(emp);
-        return emp;
+        stockDataBySymbolRepository.save(dataBySymbol);
+        return dataBySymbol;
     }
 }

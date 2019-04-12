@@ -10,16 +10,9 @@ import org.springframework.data.cassandra.core.mapping.Table;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table("Stock_Data_By_Symbol")
-public class StockDataBySymbol {
-
+@Table("Stock_Companies")
+public class StockCompany {
     @PrimaryKey
-    private @NonNull StockDataBySymbolKey stockDataBySymbolKey;
-
-    private Double open;
-    private Double high;
-    private Double low;
-    private Double close;
-    private Integer volume;
-
+    private @NonNull StockCompanyKey key;
+    private String company_name;
 }
